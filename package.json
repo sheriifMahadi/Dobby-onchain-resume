@@ -11,6 +11,8 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@alch/alchemy-sdk": "^1.1.1",
+    "alchemy-sdk": "^3.6.3",
     "axios": "^1.11.0",
     "ethers": "^6.15.0",
     "html2pdf.js": "^0.12.0",
