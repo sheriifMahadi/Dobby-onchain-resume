@@ -7,11 +7,11 @@ import { fetchActivity } from "@/lib/fetchers/fetchActivity";
 
 export async function GET(
   req: NextRequest,
-  context: { params: { source: string } }
+  { params } : { params: Promise<{source: string}> }
 ) {
   try {
     // Await params for dynamic routes
-    const { source } = await context.params;
+    const { source } = await params;
 
     const addressOrEns = req.nextUrl.searchParams.get("address") || "";
     const address = await resolveAddress(addressOrEns);
