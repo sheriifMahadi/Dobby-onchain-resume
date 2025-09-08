@@ -1,59 +1,46 @@
 "use client";
-import { useState } from "react";
 
-export default function ResumeGenerator() {
-  const [wallet, setWallet] = useState("");
-  const [resume, setResume] = useState("");
-  const [loading, setLoading] = useState(false);
+type ResumeCardProps = {
+  resumeText: string;
+};
 
-  const generateResume = async () => {
-    if (!wallet) return;
-
-    setLoading(true);
-
-    try {
-      // 1️⃣ Fetch all onchain data first
-      const fetchRes = await fetch(`/api/fetch/all?address=${wallet}`);
-      const profile = await fetchRes.json();
-
-      // 2️⃣ Send normalized data to Dobby
-      const dobbyRes = await fetch("/api/dobby", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ profile }),
-      });
-
-      const { resumeText } = await dobbyRes.json();
-      setResume(resumeText);
-    } catch (err) {
-      console.error(err);
-      setResume("Failed to generate resume.");
-    } finally {
-      setLoading(false);
-    }
-  };
+export default function ResumeCard({ resumeText }: ResumeCardProps) {
+  // Split into sections by markdown headers (##)
+  const sections = resumeText
+    .split(/^##\s+/m) // split when "## " appears
+    .map((s) => s.trim())
+    .filter(Boolean);
 
   return (
-    <div className="p-6">
-      <input
-        type="text"
-        placeholder="Enter wallet or ENS"
-        value={wallet}
-        onChange={(e) => setWallet(e.target.value)}
-        className="border p-2 mr-2"
-      />
-      <button
-        onClick={generateResume}
-        className="bg-blue-500 text-white px-4 py-2 rounded"
-      >
-        {loading ? "Generating..." : "Generate Resume"}
-      </button>
+    <div className="p-8 rounded-2xl bg-white shadow-2xl space-y-8">
+      {sections.map((section, idx) => {
+        const [header, ...rest] = section.split("\n");
+        const content = rest.join("\n").trim();
 
-      {resume && (
-        <div id="resume" className="mt-6 p-4 border rounded bg-gray-50">
-          <pre>{resume}</pre>
-        </div>
-      )}
+        return (
+          <div key={idx} className="space-y-3">
+            <h2 className="text-2xl font-semibold text-[#FFB07C]">
+              {header}
+            </h2>
+
+            {content.includes("- ") ? (
+              <ul className="list-disc list-inside space-y-1 text-black">
+                {content.split("\n").map((line, i) =>
+                  line.startsWith("-") ? (
+                    <li key={i}>{line.replace(/^- /, "").trim()}</li>
+                  ) : (
+                    <p key={i}>{line}</p>
+                  )
+                )}
+              </ul>
+            ) : (
+              <p className="text-black whitespace-pre-line leading-relaxed">
+                {content}
+              </p>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }

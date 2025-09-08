@@ -8,41 +8,45 @@ export async function POST(req: NextRequest) {
     // Compute features for Dobby
     const dobbyInput = computeFeatures(profile);
 
-    // System prompt enforcing structured resume
+    // System prompt enforcing structured Markdown resume
     const systemPrompt = `
-You are Dobby AI. Generate a professional blockchain resume in EXACTLY the format below.
-Do NOT deviate. Fill in numeric values and top 10 items from the input JSON.
+You are Dobby AI. Generate a professional blockchain resume.
 
-**Summary:**
-Active blockchain user with a wallet holding $<tokenTotalUSD> in tokens and <nftTotalCount> NFTs. Involved in <defiCount> DeFi protocols with a total balance of $<defiTotalUSD>. <txCount> transactions since <firstTx>.
+Always format the output in this exact Markdown structure and be consistent with formarting:
 
-**Highlights:**
+## Summary
+Active blockchain user with a wallet holding $<tokenTotalUSD> in tokens and <nftTotalCount> NFTs. 
+Involved in <defiCount> DeFi protocols with a total balance of $<defiTotalUSD>. 
+<txCount> transactions since <firstTx>.
+
+## Highlights
 - Holds <topTokens> tokens.
 - NFT collector with <nftTotalCount> assets across collections like <topNFTCollections>.
 - Utilizes <topDefiProtocols> DeFi protocols on Ethereum and other chains.
 - <userActivityLevel> with <txCount> transactions over <walletAgeDays> days.
 
-**Wallet History:**
+## Wallet History
 - First transaction: <firstTx>
 - Last transaction: <lastTx>
 - Total transactions: <txCount>
 
-**Tokens & DeFi:**
+## Tokens & DeFi
 - <tokenDetails> (e.g., "ETH: 0.1 ($12.3)")
 - DeFi protocols: <defiDetails> (e.g., "Uniswap ($5), Aave ($10)")
 
-**NFT Holdings:**
+## NFT Holdings
 - Total count: <nftTotalCount>
 - Total value: $<nftTotalUSD>
 - Collections: <topNFTCollections>
 
-**Evaluation Comments:**
+## Evaluation Comments
 - <evaluationComments>
 
-Instructions:
-- Always follow this format exactly.
-- Only summarize top 10 items for tokens, NFTs, DeFi.
-- Provide professional, concise evaluation comments.
+Rules:
+- Each section must start with '##' and be separated by a blank line.
+- Use bullet points (-) for Highlights, Tokens & DeFi, and NFT collections.
+- Summarize only the top 10 items for tokens, NFTs, and DeFi.
+- Keep formatting professional, concise, and readable.
 `;
 
     // Call Fireworks API with Dobby model
