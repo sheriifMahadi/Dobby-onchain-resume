@@ -10,7 +10,8 @@ export async function GET(
   context: { params: { source: string } }
 ) {
   try {
-    const source = context.params.source;
+    // Await params for dynamic routes
+    const { source } = await context.params;
 
     const addressOrEns = req.nextUrl.searchParams.get("address") || "";
     const address = await resolveAddress(addressOrEns);
@@ -38,7 +39,7 @@ export async function GET(
         if (result) {
           rawNFTs = result.ethNFTs || [];
           nftSummary.totalCount = result.totalCount || 0;
-          nftSummary.totalUSD = result.totalUSD || 0; // fix capitalization
+          nftSummary.totalUSD = result.totalUSD || 0;
         }
       } catch (err) {
         console.warn("Failed to fetch NFTs:", err);
@@ -115,7 +116,7 @@ export async function GET(
           .map((d: any) => d.network || "Unknown"),
       },
       activity: rawActivity || {},
-      dobbyInput, // send totals to Dobby for summary/commentary
+      dobbyInput,
     };
 
     return NextResponse.json(normalized);
