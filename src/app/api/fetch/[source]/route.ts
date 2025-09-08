@@ -44,7 +44,6 @@ export async function GET(req: NextRequest, context: { params: { source: string 
     // Activity
     if (source === "activity" || source === "all") {
       rawActivity = await fetchActivity(address);
-      console.log("Fetched activity:", rawActivity);
     }
 
     // --- Prepare data for Dobby ---

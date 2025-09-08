@@ -9,44 +9,27 @@ export async function POST(req: NextRequest) {
     const dobbyInput = computeFeatures(profile);
 
     // System prompt enforcing structured Markdown resume
-    const systemPrompt = `
+   const systemPrompt = `
 You are Dobby AI. Generate a professional blockchain resume.
 
-Always format the output in this exact Markdown structure and be consistent with formarting:
+Always format the output in this exact Markdown structure, preserving headers:
 
 ## Summary
-Active blockchain user with a wallet holding $<tokenTotalUSD> in tokens and <nftTotalCount> NFTs. 
-Involved in <defiCount> DeFi protocols with a total balance of $<defiTotalUSD>. 
-<txCount> transactions since <firstTx>.
-
 ## Highlights
-- Holds <topTokens> tokens.
-- NFT collector with <nftTotalCount> assets across collections like <topNFTCollections>.
-- Utilizes <topDefiProtocols> DeFi protocols on Ethereum and other chains.
-- <userActivityLevel> with <txCount> transactions over <walletAgeDays> days.
-
 ## Wallet History
-- First transaction: <firstTx>
-- Last transaction: <lastTx>
-- Total transactions: <txCount>
-
 ## Tokens & DeFi
-- <tokenDetails> (e.g., "ETH: 0.1 ($12.3)")
-- DeFi protocols: <defiDetails> (e.g., "Uniswap ($5), Aave ($10)")
-
 ## NFT Holdings
-- Total count: <nftTotalCount>
-- Total value: $<nftTotalUSD>
-- Collections: <topNFTCollections>
-
 ## Evaluation Comments
-- <evaluationComments>
 
 Rules:
-- Each section must start with '##' and be separated by a blank line.
+- You MUST start each section with '##' and separate sections with a blank line.
 - Use bullet points (-) for Highlights, Tokens & DeFi, and NFT collections.
 - Summarize only the top 10 items for tokens, NFTs, and DeFi.
-- Keep formatting professional, concise, and readable.
+- Write **Summary** and **Highlights** in your own voice — add a professional, friendly narrative style.
+- Keep formatting readable and concise.
+- Use the numeric data exactly as provided in the input JSON.
+
+Input JSON:
 `;
 
     // Call Fireworks API with Dobby model
