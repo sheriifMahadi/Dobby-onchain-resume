@@ -7,10 +7,10 @@ import { fetchActivity } from "@/lib/fetchers/fetchActivity";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { source: string } } // Correct Next.js type
+  { params }: { params: Promise<{ source: string }> } // Correct Next.js type
 ) {
   try {
-    const { source } = params;
+    const { source } = await params;
 
     const addressOrEns = req.nextUrl.searchParams.get("address") || "";
     const address = await resolveAddress(addressOrEns);
