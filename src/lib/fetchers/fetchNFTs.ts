@@ -29,7 +29,6 @@ export async function fetchNFTs(addressOrEns: string) {
       const count = res.data.totalCount ?? (res.data.ownedNfts?.length ?? 0);
       totalCount += count;
 
-      // TODO: Add USD value using floor price API if needed
     } catch (err) {
       console.warn(`Alchemy fetch failed on ${chain}:`, err.message);
     }

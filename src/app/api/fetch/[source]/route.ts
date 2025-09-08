@@ -46,7 +46,7 @@ export async function GET(req: NextRequest, context: { params: { source: string 
       rawActivity = await fetchActivity(address);
     }
 
-    // --- Prepare data for Dobby ---
+    // prepare data for Dobby
     const dobbyInput = {
       tokenCount: rawTokens.length,
       tokenTotalUSD: rawTokens.reduce((sum, t) => sum + (t.valueUsd || 0), 0),

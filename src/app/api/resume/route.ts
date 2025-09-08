@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
     }
     console.log("Resolved address:", resolvedAddress);
 
-    // 2️⃣ Fetch all data concurrently
+    // Fetch all data concurrently
     const [tokensRaw, nftsRaw, defiRaw, govRaw] = await Promise.all([
       fetchTokens(resolvedAddress).catch(() => []),
       fetchNFTs(resolvedAddress).catch(() => []),
@@ -31,10 +31,10 @@ export async function GET(req: NextRequest) {
 
     console.log("NFTs fetched:", nftsRaw.length);
 
-    // 3️⃣ Generate a basic summary for Dobby
+    // Generate a basic summary for Dobby
     const summary = `Address ${resolvedAddress} holds ${tokensRaw.length} tokens, ${nftsRaw.length} NFTs, and has ${defiRaw.length} DeFi positions.`;
 
-    // 4️⃣ Return normalized JSON
+    // Return normalized JSON
     return NextResponse.json({
       summary,
       tokens: tokensRaw,

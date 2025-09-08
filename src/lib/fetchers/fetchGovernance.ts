@@ -1,7 +1,6 @@
 import axios from "axios";
 import { resolveAddress } from "./utils";
 
-// --- 1️⃣ Snapshot: off-chain governance ---
 export async function fetchSnapshot(addressOrEns: string) {
   const address = await resolveAddress(addressOrEns);
 
@@ -45,7 +44,7 @@ export async function fetchSnapshot(addressOrEns: string) {
   }
 }
 
-// --- 2️⃣ Tally: on-chain governance ---
+// Tally: on-chain governance
 export async function fetchTally(addressOrEns: string) {
   const address = await resolveAddress(addressOrEns);
 
@@ -69,7 +68,7 @@ export async function fetchTally(addressOrEns: string) {
   }
 }
 
-// --- 3️⃣ Combined Governance Fetcher ---
+// Combined Governance Fetcher 
 export async function fetchGovernance(addressOrEns: string) {
   const [snapshot, tally] = await Promise.all([
     fetchSnapshot(addressOrEns),

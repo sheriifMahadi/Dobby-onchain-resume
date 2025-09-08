@@ -45,9 +45,7 @@ Input JSON:
   }
 }
 
-/**
- * Fireworks AI / Dobby model call
- */
+
 async function callDobbyAI({
   input,
   systemPrompt,

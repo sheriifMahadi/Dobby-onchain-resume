@@ -67,10 +67,10 @@ export default function Home() {
 
         {resume && (
           <div className="relative space-y-4">
-            {/* Resume Card with id for snapshot */}
+            {/* resume Card with id for snapshot */}
             <ResumeCard id="resume" resumeText={resume} />
 
-            {/* Share button at top-right (inside card container) */}
+            {/* share button at top-right (inside card container) */}
             <div className="flex justify-end">
               <button
                 onClick={() =>

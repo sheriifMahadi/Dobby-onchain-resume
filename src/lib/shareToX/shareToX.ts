@@ -6,7 +6,6 @@ export async function shareToX(element: HTMLElement) {
   // Render the element to canvas
   const canvas = await html2canvas(element, { scale: 2 });
 
-  // Convert canvas to blob
   canvas.toBlob((blob) => {
     if (!blob) return;
 
