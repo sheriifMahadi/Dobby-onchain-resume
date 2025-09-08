@@ -36,9 +36,10 @@ export async function GET(
       try {
         const result = await fetchNFTs(address);
         if (result) {
-          rawNFTs = Array.isArray(result) ? result : result.ethNFTs || [];
-          nftSummary.totalCount = result.totalCount || 0;
-          nftSummary.totalUSD = result.totalUsd || 0;
+          // Normalize NFTs into an array
+          rawNFTs = Array.isArray(result) ? result : result.ethNFTs ?? [];
+          nftSummary.totalCount = result.totalCount ?? 0;
+          nftSummary.totalUSD = result.totalUsd ?? 0;
         }
       } catch (err) {
         console.warn("Failed to fetch NFTs:", err);
@@ -66,19 +67,19 @@ export async function GET(
 
     // Compute Dobby input safely
     const dobbyInput = {
-      tokenCount: rawTokens?.length || 0,
-      tokenTotalUSD: (rawTokens || []).reduce((sum, t) => sum + (t.valueUsd || 0), 0),
-      nftTotalCount: nftSummary.totalCount || 0,
-      nftTotalUSD: nftSummary.totalUSD || 0,
-      defiCount: rawDefi?.length || 0,
-      defiTotalUSD: (rawDefi || []).reduce((sum, d) => sum + (d.balanceUSD || 0), 0),
-      activity: rawActivity || {},
+      tokenCount: rawTokens.length,
+      tokenTotalUSD: rawTokens.reduce((sum, t) => sum + (t.valueUsd || 0), 0),
+      nftTotalCount: nftSummary.totalCount,
+      nftTotalUSD: nftSummary.totalUSD,
+      defiCount: rawDefi.length,
+      defiTotalUSD: rawDefi.reduce((sum, d) => sum + (d.balanceUSD || 0), 0),
+      activity: rawActivity,
     };
 
     // Slice arrays for frontend display (top 10)
     const normalized = {
       wallet: address,
-      tokens: (rawTokens || [])
+      tokens: rawTokens
         .filter((t: any) => t.balance > 0 || t.valueUsd > 0)
         .slice(0, 10)
         .map((t: any) => ({
@@ -87,23 +88,21 @@ export async function GET(
           valueUsd: t.valueUsd || 0,
         })),
       nfts: {
-        totalCount: nftSummary.totalCount || 0,
-        totalUSD: nftSummary.totalUSD || 0,
-        ethMetadata: (rawNFTs || [])
-          .slice(0, 10)
-          .map((n: any) => ({
-            collection: n.collection || "Unknown Collection",
-            name: n.name || `#${n.tokenId}`,
-            valueUsd: n.valueUsd || 0,
-          })),
+        totalCount: nftSummary.totalCount,
+        totalUSD: nftSummary.totalUSD,
+        ethMetadata: rawNFTs.slice(0, 10).map((n: any) => ({
+          collection: n.collection || "Unknown Collection",
+          name: n.name || `#${n.tokenId}`,
+          valueUsd: n.valueUsd || 0,
+        })),
       },
       defi: {
-        protocols: (rawDefi || []).slice(0, 10).map((d: any) => d.appName || "Unknown"),
-        balance: (rawDefi || []).slice(0, 10).map((d: any) => d.balanceUSD || 0),
-        network: (rawDefi || []).slice(0, 10).map((d: any) => d.network || "Unknown"),
+        protocols: rawDefi.slice(0, 10).map((d: any) => d.appName || "Unknown"),
+        balance: rawDefi.slice(0, 10).map((d: any) => d.balanceUSD || 0),
+        network: rawDefi.slice(0, 10).map((d: any) => d.network || "Unknown"),
       },
-      activity: rawActivity || {},
-      dobbyInput, // Send totals for summary/commentary
+      activity: rawActivity,
+      dobbyInput,
     };
 
     return NextResponse.json(normalized);
