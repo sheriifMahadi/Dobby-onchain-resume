@@ -2,9 +2,10 @@
 
 type ResumeCardProps = {
   resumeText: string;
+  id?: string;
 };
 
-export default function ResumeCard({ resumeText }: ResumeCardProps) {
+export default function ResumeCard({ resumeText, id }: ResumeCardProps) {
   // Split into sections by markdown headers (##)
   const sections = resumeText
     .split(/^##\s+/m) // split when "## " appears
@@ -12,7 +13,7 @@ export default function ResumeCard({ resumeText }: ResumeCardProps) {
     .filter(Boolean);
 
   return (
-    <div className="p-8 rounded-2xl bg-white shadow-2xl space-y-8">
+    <div id={id} className="p-8 rounded-2xl bg-white shadow-2xl space-y-8">
       {sections.map((section, idx) => {
         const [header, ...rest] = section.split("\n");
         const content = rest.join("\n").trim();

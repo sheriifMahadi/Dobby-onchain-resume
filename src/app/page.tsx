@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import ResumeCard from "@/components/ResumeCard";
+import { shareToX } from "@/lib/shareToX/shareToX";
 
 export default function Home() {
   const [wallet, setWallet] = useState("");
@@ -13,9 +14,11 @@ export default function Home() {
     setLoading(true);
 
     try {
+      // 1️⃣ Fetch onchain data
       const fetchRes = await fetch(`/api/fetch/all?address=${wallet}`);
       const profile = await fetchRes.json();
 
+      // 2️⃣ Generate resume with Dobby
       const dobbyRes = await fetch("/api/dobby", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -36,7 +39,7 @@ export default function Home() {
     <main className="min-h-screen bg-[#fdf5e6] flex flex-col items-center p-8">
       <div className="max-w-3xl w-full space-y-6">
         <h1 className="text-3xl font-semibold text-slate-800">
-          Dobyy Onchain Resume
+          Dobby Onchain Resume
         </h1>
 
         <div className="flex gap-2">
@@ -56,7 +59,30 @@ export default function Home() {
           </button>
         </div>
 
-        {resume && <ResumeCard resumeText={resume} />}
+        {loading && (
+          <div className="p-6 bg-white rounded-xl shadow-lg text-center text-gray-600">
+            Generating resume...
+          </div>
+        )}
+
+        {resume && (
+          <div className="relative space-y-4">
+            {/* Resume Card with id for snapshot */}
+            <ResumeCard id="resume" resumeText={resume} />
+
+            {/* Share button at top-right (inside card container) */}
+            <div className="flex justify-end">
+              <button
+                onClick={() =>
+                  shareToX(document.getElementById("resume")!)
+                }
+                className="bg-black hover:bg-gray-800 text-white font-medium px-4 py-2 rounded-lg shadow-md transition"
+              >
+                Share
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </main>
   );
