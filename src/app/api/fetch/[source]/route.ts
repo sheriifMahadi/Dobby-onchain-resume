@@ -5,9 +5,11 @@ import { fetchNFTs } from "@/lib/fetchers/fetchNFTs";
 import { fetchDefi } from "@/lib/fetchers/fetchDefi";
 import { fetchActivity } from "@/lib/fetchers/fetchActivity";
 
-export async function GET(req: NextRequest, context: { params: { source: string } }) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { source: string } }
+) {
   try {
-    const params = await context.params;
     const source = params.source;
 
     const addressOrEns = req.nextUrl.searchParams.get("address") || "";
@@ -15,7 +17,10 @@ export async function GET(req: NextRequest, context: { params: { source: string 
 
     let rawTokens: any[] = [];
     let rawNFTs: any[] = [];
-    let nftSummary: { totalCount: number; totalUSD: number } = { totalCount: 0, totalUSD: 0 };
+    let nftSummary: { totalCount: number; totalUSD: number } = {
+      totalCount: 0,
+      totalUSD: 0,
+    };
     let rawDefi: any[] = [];
     let rawActivity: any = {};
 
@@ -31,7 +36,7 @@ export async function GET(req: NextRequest, context: { params: { source: string 
       if (result) {
         rawNFTs = result.ethNFTs || [];
         nftSummary.totalCount = result.totalCount || 0;
-        nftSummary.totalUSD = result.totalUSD || 0;
+        nftSummary.totalUSD = result.totalUsd || 0;
       }
     }
 
