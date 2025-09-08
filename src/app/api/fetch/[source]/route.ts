@@ -39,7 +39,7 @@ export async function GET(
         if (result) {
           rawNFTs = result.ethNFTs || [];
           nftSummary.totalCount = result.totalCount || 0;
-          nftSummary.totalUSD = result.totalUSD || 0;
+          nftSummary.totalUSD = result.totalUsd || 0;
         }
       } catch (err) {
         console.warn("Failed to fetch NFTs:", err);
