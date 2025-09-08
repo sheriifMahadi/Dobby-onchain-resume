@@ -7,11 +7,10 @@ import { fetchActivity } from "@/lib/fetchers/fetchActivity";
 
 export async function GET(
   req: NextRequest,
-  { params } : { params: Promise<{source: string}> }
+  { params }: { params: { source: string } } // Correct Next.js type
 ) {
   try {
-    // Await params for dynamic routes
-    const { source } = await params;
+    const { source } = params;
 
     const addressOrEns = req.nextUrl.searchParams.get("address") || "";
     const address = await resolveAddress(addressOrEns);
@@ -37,9 +36,9 @@ export async function GET(
       try {
         const result = await fetchNFTs(address);
         if (result) {
-          rawNFTs = result.ethNFTs || [];
+          rawNFTs = Array.isArray(result) ? result : result.ethNFTs || [];
           nftSummary.totalCount = result.totalCount || 0;
-          nftSummary.totalUSD = result.totalUsd || 0;
+          nftSummary.totalUSD = result.totalUSD || 0;
         }
       } catch (err) {
         console.warn("Failed to fetch NFTs:", err);
@@ -68,17 +67,11 @@ export async function GET(
     // Compute Dobby input safely
     const dobbyInput = {
       tokenCount: rawTokens?.length || 0,
-      tokenTotalUSD: (rawTokens || []).reduce(
-        (sum, t) => sum + (t.valueUsd || 0),
-        0
-      ),
+      tokenTotalUSD: (rawTokens || []).reduce((sum, t) => sum + (t.valueUsd || 0), 0),
       nftTotalCount: nftSummary.totalCount || 0,
       nftTotalUSD: nftSummary.totalUSD || 0,
       defiCount: rawDefi?.length || 0,
-      defiTotalUSD: (rawDefi || []).reduce(
-        (sum, d) => sum + (d.balanceUSD || 0),
-        0
-      ),
+      defiTotalUSD: (rawDefi || []).reduce((sum, d) => sum + (d.balanceUSD || 0), 0),
       activity: rawActivity || {},
     };
 
@@ -105,18 +98,12 @@ export async function GET(
           })),
       },
       defi: {
-        protocols: (rawDefi || [])
-          .slice(0, 10)
-          .map((d: any) => d.appName || "Unknown"),
-        balance: (rawDefi || [])
-          .slice(0, 10)
-          .map((d: any) => d.balanceUSD || 0),
-        network: (rawDefi || [])
-          .slice(0, 10)
-          .map((d: any) => d.network || "Unknown"),
+        protocols: (rawDefi || []).slice(0, 10).map((d: any) => d.appName || "Unknown"),
+        balance: (rawDefi || []).slice(0, 10).map((d: any) => d.balanceUSD || 0),
+        network: (rawDefi || []).slice(0, 10).map((d: any) => d.network || "Unknown"),
       },
       activity: rawActivity || {},
-      dobbyInput,
+      dobbyInput, // Send totals for summary/commentary
     };
 
     return NextResponse.json(normalized);
