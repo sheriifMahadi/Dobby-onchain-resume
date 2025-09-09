@@ -71,20 +71,20 @@ export default function Home() {
 
         {/* Resume card */}
         {resume && !loading && (
-          <div className="relative space-y-4">
-            <ResumeCard id="resume" resumeText={resume} />
-            <div className="flex justify-end">
-              <button
-                onClick={() =>
-                  shareToX(document.getElementById("resume")!)
-                }
-                className="bg-black hover:bg-gray-800 text-white font-medium px-4 py-2 rounded-lg shadow-md transition"
-              >
-                Share
-              </button>
-            </div>
+        <div className="relative space-y-4" id="resume">
+          <ResumeCard resumeText={resume} />
+          <div className="flex justify-end">
+            <button
+              onClick={() =>
+                shareToX(wallet)
+              }
+              className="bg-black hover:bg-gray-800 text-white font-medium px-4 py-2 rounded-lg shadow-md transition"
+            >
+              Share
+            </button>
           </div>
-        )}
+        </div>
+      )}
       </div>
     </main>
   );

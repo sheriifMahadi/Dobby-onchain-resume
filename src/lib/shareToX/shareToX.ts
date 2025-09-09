@@ -1,27 +1,13 @@
-import html2canvas from "html2canvas";
+// lib/shareToX/shareToX.ts
 
-export async function shareToX(element: HTMLElement) {
-  if (!element) return alert("Resume element not found!");
+export function shareToX(wallet?: string) {
+  // const baseUrl = "https://dobby-onchain-resume.vercel.app";
+  // const resumeUrl = wallet ? `${baseUrl}?wallet=${wallet}` : baseUrl;
 
-  // Render the element to canvas
-  const canvas = await html2canvas(element, { scale: 2 });
+  // const text = encodeURIComponent(
+  //   `Check out my onchain resume! ${resumeUrl}`
+  // );
 
-  canvas.toBlob((blob) => {
-    if (!blob) return;
-
-    // 1️⃣ Trigger download
-    const file = new File([blob], "resume.png", { type: "image/png" });
-    const url = URL.createObjectURL(file);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "onchain_resume.png";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-
-    // 2️⃣ Open X with pre-filled tweet
-    const tweetUrl = `https://twitter.com/intent/tweet?text=Check out my onchain resume!&url=${encodeURIComponent(url)}`;
-    window.open(tweetUrl, "_blank");
-  });
+  // const url = `https://twitter.com/intent/tweet?text=${text}`;
+  // window.open(url, "_blank");
 }
