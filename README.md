@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dobby Onchain Resume
 
-## Getting Started
+## Features
+- Enter any wallet address or ENS
 
-First, run the development server:
+- Fetches onchain data:
 
+    - Tokens (ERC20, balances, USD value)
+    - NFTs (collections, count, estimated USD value)
+    - DeFi positions (protocols + balances)
+    -Activity (transaction count, wallet age)
+
+- Generates an AI-powered resume via the Dobby API
+
+- Share directly to X (Twitter) with one click
+
+## Tech Stack
+
+Next.js 13+ (App Router)
+
+TypeScript
+
+TailwindCSS
+
+Vercel (deployment)
+
+## 🚀 Getting Started
+
+### 1. Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/sheriffMahadi/dobby-onchain-resume.git
+cd dobby-onchain-resume.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install dependecies
+```
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Run the development server
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+npm start
+```
+This will start the app locally at:
+http://localhost:3000
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+<img width="1472" height="2760" alt="picture1" src="https://github.com/user-attachments/assets/b30e3518-e402-435c-96f8-143b9aa033ba" />
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+<img width="1472" height="2960" alt="onchain_resume (1)" src="https://github.com/user-attachments/assets/ca89e82f-f7fb-4bc5-a6d0-6ca8fabbab1c" />
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
