@@ -91,7 +91,7 @@ export async function GET(
         totalCount: nftSummary.totalCount,
         totalUSD: nftSummary.totalUSD,
         ethMetadata: rawNFTs.slice(0, 10).map((n: any) => ({
-          collection: n.colleconsolction || "Unknown Collection",
+          collection: n.collection || "Unknown Collection",
           name: n.name || `#${n.tokenId}`,
           valueUsd: n.valueUsd || 0,
         })),
