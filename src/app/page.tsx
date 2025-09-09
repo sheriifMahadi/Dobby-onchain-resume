@@ -6,11 +6,14 @@ import { shareToX } from "@/lib/shareToX/shareToX";
 
 export default function Home() {
   const [wallet, setWallet] = useState("");
-  const [resume, setResume] = useState("");
+  const [resume, setResume] = useState<string | null>(null); // allow null
   const [loading, setLoading] = useState(false);
 
   const generateResume = async () => {
     if (!wallet) return;
+
+    // Hide previous resume while generating
+    setResume(null);
     setLoading(true);
 
     try {
@@ -59,18 +62,17 @@ export default function Home() {
           </button>
         </div>
 
+        {/* Loading card */}
         {loading && (
           <div className="p-6 bg-white rounded-xl shadow-lg text-center text-gray-600">
             Generating resume...
           </div>
         )}
 
-        {resume && (
+        {/* Resume card */}
+        {resume && !loading && (
           <div className="relative space-y-4">
-            {/* resume Card with id for snapshot */}
             <ResumeCard id="resume" resumeText={resume} />
-
-            {/* share button at top-right (inside card container) */}
             <div className="flex justify-end">
               <button
                 onClick={() =>
