@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
     ]);
 
     // Generate a basic summary for Dobby
-    const summary = `Address ${resolvedAddress} holds ${tokensRaw.length} tokens, ${nftsRaw.length} NFTs, and has ${defiRaw.length} DeFi positions.`;
+    const summary = `Address ${resolvedAddress} holds ${tokensRaw.length} tokens, ${nftsRaw} NFTs, and has ${defiRaw.length} DeFi positions.`;
 
     // Return normalized JSON
     return NextResponse.json({
